@@ -4,10 +4,10 @@ import os
 import tweepy
 import uuid
 
-consumer_key = os.environ['CONSUMER_KEY']
-consumer_secret = os.environ['CONSUMER_SECRET']
-access_token = os.environ['ACCESS_TOKEN']
-access_token_secret = os.environ['ACCESS_TOKEN_SECRET']
+consumer_key = fGFOmQId24tRKmtsIpoD4nntd
+consumer_secret = ntRsegY8alhDcXdFN0aaco3sG5lAMi5Vx8eYnwKgybpWZffl3f
+access_token = 1467680913081331713-BRiiOvb54UtmHUmYPVPSGCWkZJQKl5
+access_token_secret = 0fOOgFC05CwchbRwraf6v7NfX9Ns1cr2QYJw56nakVEe9
 
 kinesis_stream_name = 'kds-twitter-sda'
 twitter_filter_tag = '#Covid19'
