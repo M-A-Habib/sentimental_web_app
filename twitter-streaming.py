@@ -9,10 +9,10 @@ import json
 import tweepy 
 
 #This is the super secret information
-consumer_key = "fGFOmQId24tRKmtsIpoD4nntd"
-consumer_secret = "ntRsegY8alhDcXdFN0aaco3sG5lAMi5Vx8eYnwKgybpWZffl3f"
-access_token = "1467680913081331713-BRiiOvb54UtmHUmYPVPSGCWkZJQKl5"
-access_token_secret = "0fOOgFC05CwchbRwraf6v7NfX9Ns1cr2QYJw56nakVEe9"
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
 bearer_token= "" 
 
 DeliveryStreamName = 'PUT-S3-qFeoj'
@@ -48,7 +48,7 @@ if __name__ == '__main__':
     kinesis_client = session.client('kinesis')
 
     #This handles Twitter authetification and the connection to Twitter Streaming API
-    stream = listener(consumer_key, consumer_secret, access_token, access_token_secret)
+    stream = listener(bearer_token)
     stream.sample() #was stream.filter
 
     print("Successfully compiled.")
