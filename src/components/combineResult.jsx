@@ -24,10 +24,6 @@ class CombinedResult extends React.Component {
     }
     render() { 
         return (
-            // <div className = 'rowC'>
-            //     <div><TwitterPost className = 'postC' twitterpost={this.props.twitterpost}></TwitterPost></div>
-            //     <div><SentimentalScore className = 'postC' score={this.calculateSentiment()}></SentimentalScore></div>
-            // </div>
             <React.Fragment>
                 <div className="card text-white bg-primary mb-3" style= {{maxWidth: "25rem"}}>
                     <div className="card-header">{"Sentimenal Score: " + this.calculateSentiment()}</div>

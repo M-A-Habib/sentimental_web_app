@@ -4,7 +4,7 @@ import {Link, NavLink} from 'react-router-dom';
 const NavBar = () => {
     return ( 
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <Link className="navbar-brand" to="/">Sentiment</Link>
+            <Link className="navbar-brand" to="/">Tweelings</Link>
             <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -22,14 +22,13 @@ const NavBar = () => {
                     {/* <li className="nav-item">
                         <NavLink className="nav-link" to="/login">Login</NavLink>
                     </li> */}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Report
                         </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <div className="dropdown-menu" aria-labelledby="navbarDropdown">
                             <NavLink className="dropdown-item" to="/monthly-report">Monthly Report</NavLink>
-                            <NavLink class="dropdown-item" to="/weekly-report">Weekly Report</NavLink>
-                            <NavLink class="dropdown-item" to="/daily-report">Daily Report</NavLink>
+                            <NavLink className="dropdown-item" to="/daily-report">Daily Report</NavLink>
                             {/* <div class="dropdown-divider"></div> */}
                         </div>
                     </li>

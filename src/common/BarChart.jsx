@@ -15,11 +15,11 @@ const BarChart = (props) => {
               borderWidth: 1
             }]
           }}
-        height = {400}
-        width = {600}>
+        height = {30}
+        width = {50}>
         options = {{
-            maintainAspectRatio: false,
-        }}
+            maintainAspectRatio: false
+        }};
       </Bar>
     </div>;
 }
