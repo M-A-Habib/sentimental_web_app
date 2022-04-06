@@ -19,6 +19,7 @@ class HomePage extends React.Component {
             {text: "Dobby is free! :D", _id: 9},
             {text: "Dobby is free! :D", _id: 10},
             {text: "Dobby is free! :D", _id: 11},
+            {text: "Dobby is free! :D", _id: 12}
         ]
     }
     render() { 

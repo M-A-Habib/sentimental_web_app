@@ -5,6 +5,8 @@ import NavBar from "./components/navBar";
 import {Route, Switch} from 'react-router-dom';
 import MyScore from './components/myScore';
 import MonthlyReport from './components/monthlyReport';
+import WeeklyReport from './components/weeklyReport';
+import DailyReport from './components/dailyReport';
 
 class App extends Component {
   render() {
@@ -15,6 +17,8 @@ class App extends Component {
           <Switch>
             <Route path='/my-score' component={MyScore}></Route>
             <Route path='/monthly-report' component={MonthlyReport}></Route>
+            <Route path='/weekly-report' component={WeeklyReport}></Route>
+            <Route path='/daily-report' component={DailyReport}></Route>
             <Route path='/' component={HomePage}></Route>
           </Switch>
         </main>

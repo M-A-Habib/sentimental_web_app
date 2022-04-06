@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import BarChart from "../common/BarChart";
 
-class MonthlyReport extends React.Component {
+class WeeklyReport extends React.Component {
     state = {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
-        graphLabel: 'Monthly Report',
+        graphLabel: 'Weekly Report',
         data: [65, 59, 80, 81, 56, 55, 40],
         backgroundColor: [
             'rgba(255, 99, 132, 0.9)',
@@ -35,4 +35,4 @@ class MonthlyReport extends React.Component {
     }
 }
  
-export default MonthlyReport;
+export default WeeklyReport;
