@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
+import BarChart from "../common/BarChart";
 
 const MonthlyReport = () => {
     return ( 
-        <h1>Monthly Report</h1>
+        <BarChart></BarChart>
      );
 }
  
