@@ -1,54 +1,73 @@
-#https://medium.com/fernando-pereiro/analyzing-twitter-on-real-time-with-aws-big-data-and-machine-learning-services-1fa888f962cf
-#https://github.com/fepereiro/FirehoseWithComprehend/blob/master/twitter-streaming.py
+#https://github.com/twitterdev/Twitter-API-v2-sample-code/blob/main/Sampled-Stream/sampled-stream.py
 
-
+import requests
+import os
+import json
 import boto3
 import random
 import time
-import json
 import tweepy 
 
-#This is the super secret information
+# To set your environment variables in your terminal run the following line:
+# export 'BEARER_TOKEN'='<your_bearer_token>'
+#bearer_token = os.environ.get("BEARER_TOKEN")
 consumer_key = ""
 consumer_secret = ""
 access_token = ""
 access_token_secret = ""
 bearer_token= "" 
 
-DeliveryStreamName = 'PUT-S3-qFeoj'
+streamName = ''
 
 
-#This is a basic listener that just prints received tweets and put them into the stream.
-class listener(tweepy.StreamingClient):
-
-    def on_status(self, status):
-
-        data = {
-            'tweet_text': status.text,
-            'created_at': str(status.created_at),
-            'user_id': status.user.id,
-            'user_name': status.user.name,
-            'user_screen_name': status.user.screen_name,
-            'user_description': status.user.description,
-            }
-        
-        response = kinesis_client.put_record(
-            StreamName=DeliveryStreamName,
-            Data=json.dumps(data))
-
-        print('Status: ' +
-              json.dumps(response['ResponseMetadata']['HTTPStatusCode']))
-
-    def on_error(self, status):
-        print(status)
+def create_url():
+    return "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=author_id,attachments"
 
 
-if __name__ == '__main__':
-    session = boto3.Session()
-    kinesis_client = session.client('kinesis')
+def bearer_oauth(r):
+    """
+    Method required by bearer token authentication.
+    """
 
-    #This handles Twitter authetification and the connection to Twitter Streaming API
-    stream = listener(bearer_token)
-    stream.sample() #was stream.filter
+    r.headers["Authorization"] = f"Bearer {bearer_token}"
+    r.headers["User-Agent"] = "v2SampledStreamPython"
+    return r
 
-    print("Successfully compiled.")
+
+def connect_to_endpoint(url):
+    response = requests.request("GET", url, auth=bearer_oauth, stream=True)
+    print(response.status_code)
+    for response_line in response.iter_lines():
+        if response_line:
+            json_response = json.loads(response_line)
+            response = kinesis_client.put_record_batch(
+                DeliveryStreamName=streamName,
+                Records=[
+                    {
+                       "Data" :  response_line
+                        }
+                    ]
+                )
+            #print(response)
+            #print(json.dumps(json_response, indent=4, sort_keys=True))
+
+    if response.status_code != 200:
+        raise Exception(
+            "Request returned an error: {} {}".format(
+                response.status_code, response.text
+            )
+        )
+
+
+def main():
+    url = create_url()
+    timeout = 0
+    while True:
+        connect_to_endpoint(url)
+        timeout += 1
+
+
+if __name__ == "__main__":
+    kinesis_client = boto3.client('firehose', region_name = 'us-east-1')
+    main()
+
