@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^4.6.1",
     "chart.js": "^3.7.1",
+    "fs": "^0.0.1-security",
     "jquery": "^3.6.0",
     "popper.js": "^1.16.1",
     "react": "^17.0.0",
@@ -41,5 +42,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false
   }
 }

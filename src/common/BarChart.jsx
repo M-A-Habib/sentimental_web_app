@@ -18,6 +18,7 @@ const BarChart = (props) => {
         height = {30}
         width = {50}>
         options = {{
+          responsive: true,
             maintainAspectRatio: false
         }};
       </Bar>
