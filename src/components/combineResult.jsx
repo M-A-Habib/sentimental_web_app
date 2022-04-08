@@ -25,7 +25,7 @@ class CombinedResult extends React.Component {
     render() { 
         return (
             <React.Fragment>
-                <div className="card text-white bg-primary mb-3" style= {{maxWidth: "25rem"}}>
+                <div className="card text-white bg-primary mb-3" style= {{maxWidth: "60rem"}}>
                     <div className="card-header">{"Sentimenal Score: " + this.calculateSentiment()}</div>
                     <div className="card-header">
                         <h8 className="card-text">{this.props.id}</h8>
