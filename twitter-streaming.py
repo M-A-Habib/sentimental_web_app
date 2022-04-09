@@ -1,3 +1,5 @@
+#https://github.com/twitterdev/Twitter-API-v2-sample-code/blob/main/Sampled-Stream/sampled-stream.py
+
 import requests
 import os
 import json
@@ -17,9 +19,7 @@ bearer_token= ""
 
 streamName = ''
 
-
-def create_url():
-    return "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=author_id,attachments"
+url = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,attachments&user.fields=name&expansions=author_id"
 
 
 def bearer_oauth(r):
@@ -32,8 +32,59 @@ def bearer_oauth(r):
     return r
 
 
-def connect_to_endpoint(url):
-    response = requests.request("GET", url, auth=bearer_oauth, stream=True)
+def get_rules():
+    response = requests.get(
+        "https://api.twitter.com/2/tweets/search/stream/rules", auth=bearer_oauth
+    )
+    if response.status_code != 200:
+        raise Exception(
+            "Cannot get rules (HTTP {}): {}".format(response.status_code, response.text)
+        )
+    print(json.dumps(response.json()))
+    return response.json()
+
+
+def delete_all_rules(rules):
+    if rules is None or "data" not in rules:
+        return None
+
+    ids = list(map(lambda rule: rule["id"], rules["data"]))
+    payload = {"delete": {"ids": ids}}
+    response = requests.post(
+        "https://api.twitter.com/2/tweets/search/stream/rules",
+        auth=bearer_oauth,
+        json=payload
+    )
+    if response.status_code != 200:
+        raise Exception(
+            "Cannot delete rules (HTTP {}): {}".format(
+                response.status_code, response.text
+            )
+        )
+    print(json.dumps(response.json()))
+
+
+def set_rules(delete):
+    # You can adjust the rules if needed
+    sample_rules = [
+        {"value" : "feeling lang:en is:verified"}
+    ]
+    payload = {"add": sample_rules}
+    response = requests.post(
+        "https://api.twitter.com/2/tweets/search/stream/rules",
+        auth=bearer_oauth,
+        json=payload,
+    )
+    if response.status_code != 201:
+        raise Exception(
+            "Cannot add rules (HTTP {}): {}".format(response.status_code, response.text)
+        )
+    print(json.dumps(response.json()))
+
+
+
+def get_stream(set):
+    response = requests.get(url, auth=bearer_oauth, stream=True)
     print(response.status_code)
     for response_line in response.iter_lines():
         if response_line:
@@ -58,12 +109,10 @@ def connect_to_endpoint(url):
 
 
 def main():
-    url = create_url()
-    timeout = 0
-    while True:
-        connect_to_endpoint(url)
-        timeout += 1
-
+    rules = get_rules()
+    delete = delete_all_rules(rules)
+    set = set_rules(delete)
+    get_stream(set)
 
 if __name__ == "__main__":
     kinesis_client = boto3.client('firehose', region_name = 'us-east-1')
