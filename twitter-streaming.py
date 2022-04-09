@@ -11,11 +11,11 @@ import tweepy
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 #bearer_token = os.environ.get("BEARER_TOKEN")
-consumer_key = "fGFOmQId24tRKmtsIpoD4nntd"
-consumer_secret = "ntRsegY8alhDcXdFN0aaco3sG5lAMi5Vx8eYnwKgybpWZffl3f"
-access_token = "1467680913081331713-BRiiOvb54UtmHUmYPVPSGCWkZJQKl5"
-access_token_secret = "0fOOgFC05CwchbRwraf6v7NfX9Ns1cr2QYJw56nakVEe9"
-bearer_token= "AAAAAAAAAAAAAAAAAAAAABpTWgEAAAAA2IhEST15Cg31Y4%2FtgqM0%2FL2diik%3DKSwKw1OuXdRzJUzpF7T3DdRymD2JIT2yrUNl7dwuxfdahJQ38R" 
+consumer_key = ""
+consumer_secret = ""
+access_token = ""
+access_token_secret = ""
+bearer_token= "" 
 
 streamName = 'PUT-S3-qFeoj'
 
