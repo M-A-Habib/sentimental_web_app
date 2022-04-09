@@ -11,17 +11,15 @@ import tweepy
 # To set your environment variables in your terminal run the following line:
 # export 'BEARER_TOKEN'='<your_bearer_token>'
 #bearer_token = os.environ.get("BEARER_TOKEN")
-consumer_key = ""
-consumer_secret = ""
-access_token = ""
-access_token_secret = ""
-bearer_token= "" 
+consumer_key = "fGFOmQId24tRKmtsIpoD4nntd"
+consumer_secret = "ntRsegY8alhDcXdFN0aaco3sG5lAMi5Vx8eYnwKgybpWZffl3f"
+access_token = "1467680913081331713-BRiiOvb54UtmHUmYPVPSGCWkZJQKl5"
+access_token_secret = "0fOOgFC05CwchbRwraf6v7NfX9Ns1cr2QYJw56nakVEe9"
+bearer_token= "AAAAAAAAAAAAAAAAAAAAABpTWgEAAAAA2IhEST15Cg31Y4%2FtgqM0%2FL2diik%3DKSwKw1OuXdRzJUzpF7T3DdRymD2JIT2yrUNl7dwuxfdahJQ38R" 
 
-streamName = ''
+streamName = 'PUT-S3-qFeoj'
 
-
-def create_url():
-    return "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=author_id,attachments"
+url = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,attachments&user.fields=name&expansions=author_id"
 
 
 def bearer_oauth(r):
@@ -34,8 +32,59 @@ def bearer_oauth(r):
     return r
 
 
-def connect_to_endpoint(url):
-    response = requests.request("GET", url, auth=bearer_oauth, stream=True)
+def get_rules():
+    response = requests.get(
+        "https://api.twitter.com/2/tweets/search/stream/rules", auth=bearer_oauth
+    )
+    if response.status_code != 200:
+        raise Exception(
+            "Cannot get rules (HTTP {}): {}".format(response.status_code, response.text)
+        )
+    print(json.dumps(response.json()))
+    return response.json()
+
+
+def delete_all_rules(rules):
+    if rules is None or "data" not in rules:
+        return None
+
+    ids = list(map(lambda rule: rule["id"], rules["data"]))
+    payload = {"delete": {"ids": ids}}
+    response = requests.post(
+        "https://api.twitter.com/2/tweets/search/stream/rules",
+        auth=bearer_oauth,
+        json=payload
+    )
+    if response.status_code != 200:
+        raise Exception(
+            "Cannot delete rules (HTTP {}): {}".format(
+                response.status_code, response.text
+            )
+        )
+    print(json.dumps(response.json()))
+
+
+def set_rules(delete):
+    # You can adjust the rules if needed
+    sample_rules = [
+        {"value" : "feeling lang:en is:verified"}
+    ]
+    payload = {"add": sample_rules}
+    response = requests.post(
+        "https://api.twitter.com/2/tweets/search/stream/rules",
+        auth=bearer_oauth,
+        json=payload,
+    )
+    if response.status_code != 201:
+        raise Exception(
+            "Cannot add rules (HTTP {}): {}".format(response.status_code, response.text)
+        )
+    print(json.dumps(response.json()))
+
+
+
+def get_stream(set):
+    response = requests.get(url, auth=bearer_oauth, stream=True)
     print(response.status_code)
     for response_line in response.iter_lines():
         if response_line:
@@ -60,14 +109,11 @@ def connect_to_endpoint(url):
 
 
 def main():
-    url = create_url()
-    timeout = 0
-    while True:
-        connect_to_endpoint(url)
-        timeout += 1
-
+    rules = get_rules()
+    delete = delete_all_rules(rules)
+    set = set_rules(delete)
+    get_stream(set)
 
 if __name__ == "__main__":
     kinesis_client = boto3.client('firehose', region_name = 'us-east-1')
     main()
-
