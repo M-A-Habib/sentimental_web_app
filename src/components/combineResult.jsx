@@ -29,7 +29,7 @@ class CombinedResult extends React.Component {
                     <div className="card-header">{"Sentimenal Score: " + this.calculateSentiment()}</div>
                     <div className="card-header">
                         <h8 className="card-text">{this.props.id}</h8>
-                        <p className="card-text">{this.props.twitterpost}</p>
+                        <text className="card-text">{this.props.twitterpost}</text>
                     </div>
                 </div>
             </React.Fragment>

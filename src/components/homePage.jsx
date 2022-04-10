@@ -26,7 +26,7 @@ class HomePage extends React.Component {
                     <CombinedResult id = {twitterPost._id} key = {twitterPost._id} twitterpost = {twitterPost.text}></CombinedResult>
                 ))} */}
                 {this.state.twitterFeed.map(twitterPost => (
-                    <CombinedResult id = {twitterPost.data.id} key = {twitterPost.data.id} twitterpost = {twitterPost.data.text}></CombinedResult>
+                    <CombinedResult id = {"@" + twitterPost.includes.users[0].username + " "} key = {twitterPost.data.id} twitterpost = {twitterPost.data.text}></CombinedResult>
                 ))}
             </React.Fragment>
         );
