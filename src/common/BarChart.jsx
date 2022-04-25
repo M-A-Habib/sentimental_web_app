@@ -19,7 +19,7 @@ const BarChart = (props) => {
         width = {50}>
         options = {{
           responsive: true,
-            maintainAspectRatio: false
+          maintainAspectRatio: false
         }};
       </Bar>
     </div>;
