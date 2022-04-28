@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import FeedBox from '../common/feedBox';
 import SentimentalScore from '../common/sentimentalScore';
 import TwitterPost from '../common/twitterPost';
@@ -7,9 +7,27 @@ import Records from '../appData/records.json';
 
 class HomePage extends React.Component {
     state = {
-        twitterFeed: Records
+        twitterFeed: []
     }
+
+    getJson() {
+        return fetch('https://twitter-stream-raw.s3.amazonaws.com/raw/2022/04/09/20/PUT-S3-qFeoj-4-2022-04-09-20-23-06-823a4864-0c0f-40a0-854b-e69b89b5bf94.json')
+          .then(response => response.json())
+          .then(data => this.setState({twitterFeed: data}))
+          .catch(error => {
+            console.error(error);
+          });
+    };
+
+    // MyComp = () => {
+    //     const [list, setList] = useState([]);
+      
+    //     useEffect(() => {
+    //       this.getJson().then(list => setList(list));
+    //     }, [])}
+
     render() {
+        this.getJson();
         return (
             <React.Fragment>
                 <div>
