@@ -22,7 +22,12 @@ class CombinedResult extends React.Component {
         var docs = Sentimentobj.analyze(this.props.twitterpost);
         return docs.score;
     }
-    render() { 
+    // onTrigger = () => {
+    //     this.props.parentCallback(this.calculateSentiment());
+    // }
+
+
+    render() {
         return (
             <React.Fragment>
                 <div className="card text-white bg-primary mb-3" style= {{maxWidth: "60rem"}}>

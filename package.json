@@ -11,6 +11,7 @@
     "cors": "^2.8.5",
     "fs": "^0.0.1-security",
     "jquery": "^3.6.0",
+    "node-fetch": "^3.2.4",
     "popper.js": "^1.16.1",
     "react": "^17.0.0",
     "react-chartjs-2": "^4.0.1",

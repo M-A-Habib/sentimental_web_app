@@ -52,11 +52,28 @@ ReactDOM.render(
 //   }
 // }
 
-// fetch('https://twitter-stream-raw.s3.amazonaws.com/raw/2022/04/09/20/PUT-S3-qFeoj-4-2022-04-09-20-23-06-823a4864-0c0f-40a0-854b-e69b89b5bf94.json')
+// fetch('https://63fx4b17s8.execute-api.us-east-1.amazonaws.com/default/toFront')
 //     .then ((response) => response.text())
 //     .then (data => {
 //       console.log(data)
 //     });
+
+// const fetch = require('node-fetch');
+
+// const url = 'https://twinword-sentiment-analysis.p.rapidapi.com/analyze/?text=great%20value%20in%20its%20price%20range!';
+
+// const options = {
+//   method: 'GET',
+//   headers: {
+//     'X-RapidAPI-Host': 'twinword-sentiment-analysis.p.rapidapi.com',
+//     'X-RapidAPI-Key': '2cd74ea2b0msh1f7f6232069c9b1p1185c8jsncd558e909536'
+//   }
+// };
+
+// fetch(url, options)
+// 	.then(res => res.json())
+// 	.then(json => console.log(json))
+// 	.catch(err => console.error('error:' + err));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

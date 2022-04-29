@@ -6,7 +6,7 @@ class DailyReport extends React.Component {
     state = {
         labels: retArray(),
         graphLabel: 'Daily Report',
-        data: [65, 59, 80, 81, 56, 55, 40, 89, 76, 52],
+        data: [-7, 9, 3, 4, 3 ,-1, 4, 0, 3, -2],
         backgroundColor: [
             'rgba(255, 99, 132, 0.9)'
           ],
