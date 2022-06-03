@@ -1,0 +1,167 @@
+#gateway function 
+import boto3
+from urllib.parse import unquote_plus
+from pprint import pprint
+def lambda_handler(event, context):
+    s3 = boto3.client("s3")
+    if event:
+        bucket = event['Records'][0]['s3']['bucket']['name']
+        
+        key = urllib.parse.unquote_plus(event['Records'][0]['s3']['object']['key'],encoding = 'utf-8')
+        
+        response = s3.get_object(bucket = bucket, key = key)
+        lines = fileObj["Body"].read().decode("utf-8")
+        lines = lines.replace("'",'"')
+        file = json.loads(lines)
+        for key in list(file):
+            if(key == 'ResponseMetadata'):
+                file.pop(key)
+        sent = file['Sentiment']
+        sent = sent.lower()
+        sent = sent.capitalize()
+        score = file["SentimentScore"][sent]
+        obj = {"SentimentScore":score}
+        file.pop("SentimentScore")
+        file.update(obj)
+        print(file)
+        
+        
+#imageanalysis1
+import boto3
+import json
+from urllib.parse import unquote_plus
+from pprint import pprint
+
+def lambda_handler(event, context):
+    client = boto3.client("rekognition")
+    if event:
+        file_obj = event["Records"][0]
+        bucketname = str(file_obj["s3"]["bucket"]["name"])
+        filename = unquote_plus(str(file_obj["s3"]["object"]["key"]))
+        print("Filename: ", filename)
+        fileObj = s3.get_object(Bucket=bucketname, Key=filename)
+        file_content = fileObj["Body"].read()
+        response = client.detect_faces(Image={"Bytes": file_content},Attributes=['ALL'])
+        
+        for faceDetail in response['FaceDetails']:
+            s3 = boto3.client("s3")
+            print(str(faceDetail['Emotions']))
+            encoded_ia = str(faceDetail['Emotions']).encode("utf-8")
+            indexobj = s3.get_object(Bucket="result2result", Key = "indexi.txt")
+            index_content = indexobj["Body"].read()
+            index_ = int(index_content)
+            index__ = int(index_) + 1
+            enc_index = str(index__).encode("utf-8")
+            bucket_name = "result2result"
+            s3_path = "imageresult"+str(index_)+".json"
+            index_path = "indexi.txt"
+            s3 = boto3.resource("s3")
+            s3.Bucket(bucket_name).put_object(Key=s3_path, Body=encoded_ia)
+            s3.Bucket(bucket_name).put_object(Key=index_path, Body=enc_index)
+        return "All G"
+        
+#textsentimentanalysis
+from __future__ import print_function
+
+import base64
+import json
+import boto3
+
+print('Loading function')
+
+def lambda_handler(event, context):
+    output = []
+    for record in event['records']:
+        
+        dict_data = base64.b64decode(record['data']).decode('utf-8').strip()
+        print(dict_data)
+        
+        comprehend = boto3.client(service_name='comprehend', region_name='us-east-1')
+        sentiment_all = comprehend.detect_sentiment(Text=dict_data, LanguageCode='en')
+        sentiment = sentiment_all['Sentiment']
+        print(sentiment)
+        positive = sentiment_all['SentimentScore']['Positive']
+        negative = sentiment_all['SentimentScore']['Negative']
+        total = positive - negative
+        print(total)
+        
+        data_record = {
+            'message': dict_data,
+            'sentiment': sentiment,
+            'total': total
+        }
+        print(data_record)
+        
+        output_record = {
+            'recordId': record['recordId'],
+            'result': 'Ok',
+            'data': base64.b64encode(json.dumps(data_record).encode('utf-8')).decode('utf-8')
+        }
+        print(output_record)
+        
+        output.append(output_record)
+
+    print(output)
+    bucket_name = "result2result"
+    s3_path = "textresult.txt"
+    s3 = boto3.resource("s3")
+    s3.Bucket(bucket_name).put_object(Key=s3_path, Body=output)
+    #return {'records': output}
+    
+#textanalysis1
+import boto3
+from urllib.parse import unquote_plus
+from pprint import pprint
+def lambda_handler(event, context):
+    s3 = boto3.client("s3")
+    if event:
+        file_obj = event["Records"][0]
+        bucketname = str(file_obj["s3"]["bucket"]["name"])
+        filename = unquote_plus(str(file_obj["s3"]["object"]["key"]))
+        print("Filename: ", filename)
+        fileObj = s3.get_object(Bucket=bucketname, Key=filename)
+        file_content = fileObj["Body"].read().decode("utf-8")
+        comprehend = boto3.client("comprehend")
+        sentiment = comprehend.detect_sentiment(Text = file_content, LanguageCode = "en")
+        encoded_sentiment = str (sentiment).encode("utf-8")
+        print(sentiment)
+        indexobj = s3.get_object(Bucket="result4result", Key = "index.txt")
+        index_content = indexobj["Body"].read()
+        index_ = int(index_content)
+        index__ = int(index_) + 1
+        enc_index = str(index__).encode("utf-8")
+        bucket_name = "result4result"
+        s3_path = "textresult"+str(index_)+".json"
+        index_path = "index.txt"
+        s3 = boto3.resource("s3")
+        s3.Bucket(bucket_name).put_object(Key=s3_path, Body=encoded_sentiment)
+        s3.Bucket(bucket_name).put_object(Key=index_path, Body=enc_index)
+    return "all g"
+
+#textanalysis_lambda
+import boto3
+import urllib
+from pprint import pprint
+s3 = boto3.client("s3")
+def lambda_handler(event, context):
+    for record in event['query']['Records']:
+        bucket = record[0]['s3']['bucket']['name']
+        key = record[0]['s3']['object']['key'] 
+        file = s3.get_object(Bucket = bucket, Key = key)
+    
+        analysisdata = str(file['Body'].read())
+
+        comprehend = boto3.client("comprehend")
+
+        entiment = comprehend.detect_sentiment(Text = analysisdata, LanguageCode = "en")
+        encoded_sentiment = str (sentiment).encode("utf-8")
+        print(sentiment)
+        bucket_name = "result2result"
+        s3_path = "textresult.txt"
+        s3 = boto3.resource("s3")
+        s3.Bucket(bucket_name).put_object(Key=s3_path, Body=encoded_sentiment)
+   
+#amplify-login-verify-auth-challenge-e6ebddb4
+#amplify-login-create-auth-challenge-e6ebddb4
+#amplify-login-custom-message-e6ebddb4
+#amplify-login-define-auth-challenge-e6ebddb4
