@@ -14,7 +14,9 @@ import tweepy
 bearer_token= "" 
 
 #streamName = 'PUT-S3-qFeoj' 
-streamName = 'PUT-S3-7UkOQ' #dynamic partitioning enabled
+streamName = 'PUT-S3-7UkOQ' #dynamic partitioning enabled. 60s buffer interval
+# raw/!{partitionKeyFromQuery:author_id}/ for S3 bucket prefix
+# .data.author_id JQuery 
 
 url = "https://api.twitter.com/2/tweets/search/stream?tweet.fields=author_id,attachments&user.fields=name&expansions=author_id"
 
